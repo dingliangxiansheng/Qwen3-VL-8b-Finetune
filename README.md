@@ -141,17 +141,10 @@ LoRA 相关参数在 `src/params.py`：`lora_rank=32`、`lora_alpha=64`、`lora_
 | 产物 | 6.73 GiB，compressed-tensors W4A16（group 128，symmetric） | 同左 |
 | 与 bf16 的 F1 差 | −0.0016（95% CI 含 0） | −0.0319（95% CI 不含 0） |
 
-视觉塔（0.42B）、`lm_head` 与 embedding 保持 bf16，量化部分为 252 个线性层。
+VIT（0.42B）、`lm_head` 与 embedding 保持 bf16，量化部分为 252 个线性层。
 
 `--algo awq` 保留 llmcompressor 原生 AWQ 路径用于对照，但该实现在 GQA 结构上会产出不可用权重（`v_proj → o_proj` 补偿映射因形状不匹配被跳过，权重观测器又被网格搜索污染），部署请使用 `awq-rtn`。
 
-## 已知限制
-
-1. 训练必须用 transformers 5.x：`src/model/modeling_cls.py` 与 `src/train/monkey_patch_forward.py` 在模块级导入 `transformers.models.qwen3_5`（已加 try/except 兜底，但训练路径依赖该模块）。
-2. 量化与评测依赖的 `compressed-tensors` 版本互斥（0.13.0 与 0.12.2），需分环境；0.13 产出的 `scale_dtype` / `zp_dtype` 字段要在加载前删除。
-3. 17 GB 的合并权重与量化中间产物建议放在 `/dev/shm`（本机 45 GB），数据盘至少预留 8 GB 存放量化产物。
-4. 指标为词重合类指标（Token-F1 / ROUGE-L），衡量表述一致性而非事实正确性；数字类与列表类答案在量化后存在退化，临床场景需人工复核。
-5. 数据与模型权重均不随仓库分发，需自行从上游获取并遵循各自许可。
 
 ## 参考
 
