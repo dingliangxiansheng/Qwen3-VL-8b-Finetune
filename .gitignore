@@ -1,0 +1,56 @@
+# ============================================================================
+# 版本库只收代码与配置；数据集、训练产物、量化权重、实验文档一律不入库。
+# ============================================================================
+
+# ---- 数据集与图像（由 data_process/convert.py 生成，可重新生成）----
+data/
+*.parquet
+
+# ---- 训练 / 量化产物 ----
+output/
+weights/
+weight/
+ckpt*/
+checkpoint-*/
+runs/
+logs/
+*.log
+
+# ---- 量化模型与权重（体积大，走发布渠道或对象存储）----
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.onnx
+*.whl
+
+# ---- 实验文档（长文与配图保留在本地，不随代码提交）----
+docs/
+docs1/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-*/
+venv/
+venv_*/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---- 编辑器 / 系统 ----
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---- 本地环境变量（可能含 token / 密码）----
+.env
+.env.*
+!.env.example

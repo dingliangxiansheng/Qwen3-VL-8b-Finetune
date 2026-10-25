@@ -1,0 +1,21 @@
+# ============================================================================
+# 评测环境（vLLM 服务 + 指标统计）
+#
+# 与 requirements-quant.txt 不能共用一个环境：vLLM 0.11.2 把 compressed-tensors
+# 锁在 0.12.2，而 llmcompressor 0.9 需要 0.13.0。推荐「量化一个环境、评测另一个环境」，
+# 或量化完成后再把 compressed-tensors 降到 0.12.2。
+#
+# 安装：
+#   python -m venv .venv-eval
+#   . .venv-eval/bin/activate
+#   pip install -r requirements-eval.txt
+# ============================================================================
+
+torch==2.9.0
+torchvision==0.24.0
+transformers==4.57.3
+vllm==0.11.2
+compressed-tensors==0.12.2
+
+numpy==2.2.6
+matplotlib==3.11.2

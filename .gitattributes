@@ -1,0 +1,14 @@
+# 文本文件统一 LF，避免跨平台换行差异
+* text=auto eol=lf
+
+# shell 脚本保持 LF
+*.sh text eol=lf
+
+# 二进制产物（正常情况下已被 .gitignore 排除，此处再做一次标记）
+*.safetensors binary
+*.bin binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gguf binary
+*.whl binary

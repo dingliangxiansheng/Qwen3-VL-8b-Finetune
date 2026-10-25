@@ -1,0 +1,44 @@
+# ============================================================================
+# 训练环境（LoRA 微调）
+#
+# src/model/modeling_cls.py 与 src/train/monkey_patch_forward.py 在模块级导入
+# transformers.models.qwen3_5，该模块仅存在于 transformers 5.x，因此训练侧固定
+# transformers 5.3.0；推理与量化走 4.57.x，见 requirements-quant.txt。
+#
+# 安装：
+#   python -m venv --system-site-packages .venv-train
+#   . .venv-train/bin/activate
+#   pip install -r requirements.txt
+#
+# PyPI 的 torch 轮子自带 cu128 运行时，可与 driver 595 / CUDA 13.2 共存。
+# 若机器上已有同版本 torch，只想补装差异包，可直接跑 scripts/setup_env.sh。
+# ============================================================================
+
+# ---- 深度学习框架 ----
+torch==2.8.0
+torchvision==0.23.0
+
+# ---- 模型与训练 ----
+transformers==5.3.0
+peft==0.15.2
+trl==0.25.0
+accelerate==1.7.0
+deepspeed==0.17.1            # 仅多卡训练使用，单卡流程不调用
+
+# ---- 数据与 I/O ----
+datasets==3.5.1
+huggingface-hub==1.6.0
+pyarrow==26.0.0
+pillow==11.3.0
+ujson==5.10.0
+
+# ---- 多模态预处理 ----
+qwen-vl-utils==0.0.14
+
+# ---- 统计与可视化 ----
+numpy==2.3.2
+matplotlib==3.10.5
+tensorboard==2.20.0
+
+# ---- 可选：FlashAttention 2（训练脚本设 FLASH_ATTN=1 时启用）----
+# flash-attn==2.8.3

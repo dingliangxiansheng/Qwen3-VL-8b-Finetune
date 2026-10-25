@@ -1,0 +1,34 @@
+# ============================================================================
+# 量化环境（GPTQ / AWQ 4bit 量化，llmcompressor 0.9 分支）
+#
+# 用独立虚拟环境（不要加 --system-site-packages）：系统里若存在 torch 2.8 的
+# torchvision，会与这里的 torch 2.9 发生 C 扩展 ABI 冲突，import 时直接段错误。
+#
+# 安装：
+#   python -m venv .venv-quant
+#   . .venv-quant/bin/activate
+#   pip install -r requirements-quant.txt
+#
+# 体积与耗时参考：校准 128 条样本时，GPTQ 约 32 min，AWQ（平滑 + RTN）约 40 s，
+# 产物约 6.73 GiB。
+# ============================================================================
+
+# ---- 框架（llmcompressor 0.9.0.5 要求 torch 2.7~2.9.1、transformers 4.54~4.57.3）----
+torch==2.9.0
+torchvision==0.24.0
+transformers==4.57.3
+accelerate==1.15.0
+datasets==4.8.5
+
+# ---- 量化 ----
+llmcompressor==0.9.0.5
+compressed-tensors==0.13.0
+
+# ---- 运行时补丁：torch 2.9 cu128 缺少 libcusparseLt.so.0 ----
+nvidia-cusparselt-cu12==0.7.1
+
+# ---- 序列化与可视化 ----
+sentencepiece
+protobuf
+numpy==2.2.6
+matplotlib==3.11.2
